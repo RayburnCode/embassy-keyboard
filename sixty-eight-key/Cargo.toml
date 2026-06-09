@@ -1,0 +1,25 @@
+[package]
+name = "sixty-eight-key"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+embassy-executor  = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread"] }
+embassy-rp        = { version = "0.10.0", features = ["defmt", "time-driver", "rp2040"] }
+embassy-usb       = { version = "0.6.0" }
+embassy-sync      = { version = "0.8.0" }
+embassy-time      = { version = "0.5.1" }
+embassy-futures   = { version = "0.1.2" }
+usbd-hid          = { version = "0.10" }
+defmt             = "1.1.0"
+defmt-rtt         = "1.2.0"
+cortex-m          = { version = "0.7.7", features = ["inline-asm", "critical-section-single-core"] }
+cortex-m-rt       = "0.7.5"
+panic-halt        = "0.2"
+
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
