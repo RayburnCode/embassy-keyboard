@@ -1,0 +1,65 @@
+<!-- @format -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Keyboard Matrix Visualizer - 68 Key Layout</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>⌨️ Keyboard Matrix Visualizer</h1>
+      <p>Mad Mod Labs 68 - Firmware Matrix Map</p>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div
+            class="legend-color"
+            style="background: #2a2a3a; border: 1px solid #89b4fa"
+          ></div>
+          <span>Active key position</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: #151520"></div>
+          <span>Empty/Unused</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: #313244"></div>
+          <span>Hover for details</span>
+        </div>
+      </div>
+
+      <!-- Raw Matrix View -->
+      <div class="matrix-section">
+        <h2>📊 Raw Matrix (5 rows × 14 columns)</h2>
+        <div id="matrixView" class="matrix-grid"></div>
+        <div class="info-text">
+          <span class="badge">ℹ️</span> This is the physical matrix mapping from
+          your Rust code. Each cell shows the logical key at matrix position
+          <code>(row, col)</code>. <code>None</code> values represent unused
+          matrix positions.
+        </div>
+      </div>
+
+      <!-- Visual Keyboard Layout -->
+      <div class="matrix-section">
+        <h2>🎨 Visual Keyboard Layout (with matrix coordinates)</h2>
+        <div id="keyboardView" class="keyboard-layout"></div>
+        <div class="info-text">
+          <span class="badge">⌨️</span> Visual representation based on your JSON
+          layout. Hover over any key to see its matrix coordinate. The key
+          widths match your mechanical keyboard physical spacing.
+        </div>
+      </div>
+
+      <!-- Matrix Statistics -->
+      <div class="matrix-section">
+        <h2>📈 Matrix Statistics</h2>
+        <div id="stats" style="font-family: monospace; font-size: 13px"></div>
+      </div>
+    </div>
+  </body>
+  <script src="layout.js"></script>
+</html>
