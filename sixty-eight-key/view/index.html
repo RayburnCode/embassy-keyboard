@@ -6,12 +6,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-    <title>Keyboard Matrix Visualizer - 68 Key Layout</title>
+    <title>Keyboard Layout Visualizer</title>
   </head>
   <body>
     <div class="container">
-      <h1>⌨️ Keyboard Matrix Visualizer</h1>
-      <p>Mad Mod Labs 68 - Firmware Matrix Map</p>
+      <h1>⌨️ Keyboard Layout Visualizer</h1>
+      <p>
+        Layout source: <code>src/keyboard-layout.json</code> — Edit that file
+        and run <code>cargo build</code> to regenerate the firmware matrix map
+        automatically.
+      </p>
 
       <div class="legend">
         <div class="legend-item">
@@ -19,45 +23,63 @@
             class="legend-color"
             style="background: #2a2a3a; border: 1px solid #89b4fa"
           ></div>
-          <span>Active key position</span>
+          <span>Wired key (has matrix entry)</span>
         </div>
         <div class="legend-item">
-          <div class="legend-color" style="background: #151520"></div>
-          <span>Empty/Unused</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color" style="background: #313244"></div>
-          <span>Hover for details</span>
+          <div
+            class="legend-color"
+            style="background: #151520; border: 1px dashed #6c7086"
+          ></div>
+          <span>Unwired / unimplemented</span>
         </div>
       </div>
 
-      <!-- Raw Matrix View -->
+      <!-- Layout Validation -->
       <div class="matrix-section">
-        <h2>📊 Raw Matrix (5 rows × 14 columns)</h2>
-        <div id="matrixView" class="matrix-grid"></div>
+        <h2>🔍 Layout Validation</h2>
+        <div id="validationView"></div>
         <div class="info-text">
-          <span class="badge">ℹ️</span> This is the physical matrix mapping from
-          your Rust code. Each cell shows the logical key at matrix position
-          <code>(row, col)</code>. <code>None</code> values represent unused
-          matrix positions.
+          <span class="badge">ℹ️</span>
+          Checks the layout JSON for duplicate matrix positions, out-of-bounds
+          coordinates, and missing labels. The firmware MATRIX_MAP is generated
+          from this same JSON at build time — they are always in sync.
         </div>
       </div>
 
-      <!-- Visual Keyboard Layout -->
+      <!-- Visual Keyboard -->
       <div class="matrix-section">
-        <h2>🎨 Visual Keyboard Layout (with matrix coordinates)</h2>
+        <h2>🎨 Visual Keyboard Layout</h2>
         <div id="keyboardView" class="keyboard-layout"></div>
         <div class="info-text">
-          <span class="badge">⌨️</span> Visual representation based on your JSON
-          layout. Hover over any key to see its matrix coordinate. The key
-          widths match your mechanical keyboard physical spacing.
+          <span class="badge">⌨️</span>
+          Physical key positions rendered from the <code>x</code>,
+          <code>y</code>, <code>w</code> fields in
+          <code>keyboard-layout.json</code>. Each key shows its display name and
+          matrix coordinate badge. Faded keys are physically present but not
+          wired in the firmware.
         </div>
       </div>
 
-      <!-- Matrix Statistics -->
+      <!-- Raw Matrix Grid -->
+      <div class="matrix-section">
+        <h2>📊 Raw Matrix Grid</h2>
+        <div id="matrixView" class="matrix-grid"></div>
+        <div class="info-text">
+          <span class="badge">ℹ️</span>
+          Every cell in the scan matrix. This is exactly what
+          <code>MATRIX_MAP</code> looks like in the firmware (auto-generated
+          from the JSON by <code>build.rs</code>). <code>NULL</code> positions
+          are unused matrix slots.
+        </div>
+      </div>
+
+      <!-- Statistics -->
       <div class="matrix-section">
         <h2>📈 Matrix Statistics</h2>
-        <div id="stats" style="font-family: monospace; font-size: 13px"></div>
+        <div
+          id="stats"
+          style="font-family: monospace; font-size: 13px; line-height: 1.8"
+        ></div>
       </div>
     </div>
   </body>

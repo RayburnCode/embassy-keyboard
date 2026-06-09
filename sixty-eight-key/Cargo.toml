@@ -18,6 +18,9 @@ cortex-m-rt       = "0.7.5"
 panic-halt        = "0.2"
 
 
+[build-dependencies]
+serde_json = "1"
+
 [profile.release]
 opt-level = "s"
 lto = true

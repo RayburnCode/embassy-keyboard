@@ -11,7 +11,6 @@ pub enum KeyPosition {
     LeftShift, Z, X, C, V, B, N, M, Comma, Dot, Slash, RightShift,
     LeftCtrl, LeftAlt, LeftGui, Space, RightAlt, Fn, LeftArrow, DownArrow, UpArrow, RightArrow,
 }
-//Backtick
 
 #[derive(Debug, Clone, Copy)]
 pub struct KeyEvent {
@@ -27,14 +26,9 @@ pub static KEY_CHANNEL: Channel<CriticalSectionRawMutex, KeyEvent, 16> = Channel
 pub static USB_HID_CHANNEL: Channel<CriticalSectionRawMutex, KeyboardReport, 4> = Channel::new();
 
 // Matrix scan position → logical key
-// This table is the *only* place that knows about your PCB wiring
-pub const MATRIX_MAP: [[Option<KeyPosition>; 14]; 5] = [
-    [Some(KeyPosition::Escape), Some(KeyPosition::N1), Some(KeyPosition::N2), Some(KeyPosition::N3), Some(KeyPosition::N4), Some(KeyPosition::N5), Some(KeyPosition::N6), Some(KeyPosition::N7), Some(KeyPosition::N8), Some(KeyPosition::N9), Some(KeyPosition::N0), Some(KeyPosition::Minus), Some(KeyPosition::Equals), Some(KeyPosition::Backspace)],
-    [Some(KeyPosition::Tab), Some(KeyPosition::Q), Some(KeyPosition::W), Some(KeyPosition::E), Some(KeyPosition::R), Some(KeyPosition::T), Some(KeyPosition::Y), Some(KeyPosition::U), Some(KeyPosition::I), Some(KeyPosition::O), Some(KeyPosition::P), Some(KeyPosition::LeftBracket), Some(KeyPosition::RightBracket), Some(KeyPosition::Backslash)],
-    [Some(KeyPosition::CapsLock), Some(KeyPosition::A), Some(KeyPosition::S), Some(KeyPosition::D), Some(KeyPosition::F), Some(KeyPosition::G), Some(KeyPosition::H), Some(KeyPosition::J), Some(KeyPosition::K), Some(KeyPosition::L), Some(KeyPosition::Semicolon), Some(KeyPosition::Quote), Some(KeyPosition::Enter), None],
-    [Some(KeyPosition::LeftShift), Some(KeyPosition::Z), Some(KeyPosition::X), Some(KeyPosition::C), Some(KeyPosition::V), Some(KeyPosition::B), Some(KeyPosition::N), Some(KeyPosition::M), Some(KeyPosition::Comma), Some(KeyPosition::Dot), Some(KeyPosition::Slash), Some(KeyPosition::RightShift), None, None],
-    [Some(KeyPosition::LeftCtrl), Some(KeyPosition::LeftAlt), Some(KeyPosition::LeftGui), Some(KeyPosition::Space), Some(KeyPosition::RightAlt), Some(KeyPosition::Fn), Some(KeyPosition::LeftArrow), Some(KeyPosition::DownArrow), Some(KeyPosition::UpArrow), Some(KeyPosition::RightArrow), None, None, None, None],
-];
+// Auto-generated from src/keyboard-layout.json — edit that file to change the layout,
+// then run `cargo build` to regenerate. Do not edit MATRIX_MAP here directly.
+include!(concat!(env!("OUT_DIR"), "/matrix_map.rs"));
 
 #[embassy_executor::task]
 pub async fn keymap_task() {
