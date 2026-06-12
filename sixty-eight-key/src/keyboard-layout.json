@@ -13,7 +13,7 @@
     "The view/layout.js visualizer also reads this data for the browser-based validation view."
   ],
   "name": "Mad Mod Labs 68",
-  "matrix": { "rows": 5, "cols": 14 },
+  "matrix": { "rows": 5, "cols": 15 },
   "layouts": {
     "LAYOUT": {
       "layout": [
@@ -32,11 +32,11 @@
         { "matrix": [0, 12], "x": 12, "y": 0, "w": 1, "label": "Equals" },
         { "matrix": [0, 13], "x": 13, "y": 0, "w": 2, "label": "Backspace" },
         {
+          "matrix": [0, 14],
           "x": 15,
           "y": 0,
           "w": 1,
-          "label": null,
-          "note": "Backtick — physically present, not yet wired in firmware"
+          "label": "Backtick"
         },
 
         { "matrix": [1, 0], "x": 0, "y": 1, "w": 1.5, "label": "Tab" },
@@ -72,11 +72,11 @@
           "label": "Backslash"
         },
         {
+          "matrix": [1, 14],
           "x": 15,
           "y": 1,
           "w": 1,
-          "label": null,
-          "note": "Page Up — physically present, not yet wired in firmware"
+          "label": "PageUp"
         },
 
         { "matrix": [2, 0], "x": 0, "y": 2, "w": 1.75, "label": "CapsLock" },
@@ -93,11 +93,11 @@
         { "matrix": [2, 11], "x": 11.75, "y": 2, "w": 1, "label": "Quote" },
         { "matrix": [2, 12], "x": 12.75, "y": 2, "w": 2.25, "label": "Enter" },
         {
+          "matrix": [2, 14],
           "x": 15,
           "y": 2,
           "w": 1,
-          "label": null,
-          "note": "Page Down — physically present, not yet wired in firmware"
+          "label": "PageDown"
         },
 
         { "matrix": [3, 0], "x": 0, "y": 3, "w": 2.25, "label": "LeftShift" },
@@ -119,18 +119,18 @@
           "label": "RightShift"
         },
         {
+          "matrix": [3, 14],
           "x": 14,
           "y": 3,
           "w": 1,
-          "label": null,
-          "note": "Unassigned — matrix [3,12]=None; UpArrow is wired via matrix row 4 at [4,8]"
+          "label": "UpArrow"
         },
         {
+          "matrix": [3, 13],
           "x": 15,
           "y": 3,
           "w": 1,
-          "label": null,
-          "note": "Delete — physically present, not yet wired in firmware ([3,13]=None)"
+          "label": "Delete"
         },
 
         { "matrix": [4, 0], "x": 0, "y": 4, "w": 1.25, "label": "LeftCtrl" },
@@ -141,7 +141,6 @@
         { "matrix": [4, 5], "x": 11, "y": 4, "w": 1, "label": "Fn" },
         { "matrix": [4, 6], "x": 12, "y": 4, "w": 1, "label": "LeftArrow" },
         { "matrix": [4, 7], "x": 13, "y": 4, "w": 1, "label": "DownArrow" },
-        { "matrix": [4, 8], "x": 14, "y": 4, "w": 1, "label": "UpArrow" },
         { "matrix": [4, 9], "x": 15, "y": 4, "w": 1, "label": "RightArrow" }
       ]
     }

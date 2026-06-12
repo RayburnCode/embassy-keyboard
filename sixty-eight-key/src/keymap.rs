@@ -5,10 +5,10 @@ use usbd_hid::descriptor::KeyboardReport;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum KeyPosition {
     // Name every key by what it *is*, not where it sits in the matrix
-    Escape, N1, N2, N3, N4, N5, N6, N7, N8, N9, N0, Minus, Equals, Backspace,
-    Tab, Q, W, E, R, T, Y, U, I, O, P, LeftBracket, RightBracket, Backslash,
-    CapsLock, A, S, D, F, G, H, J, K, L, Semicolon, Quote, Enter,
-    LeftShift, Z, X, C, V, B, N, M, Comma, Dot, Slash, RightShift,
+    Escape, N1, N2, N3, N4, N5, N6, N7, N8, N9, N0, Minus, Equals, Backspace, Backtick,
+    Tab, Q, W, E, R, T, Y, U, I, O, P, LeftBracket, RightBracket, Backslash, PageUp,
+    CapsLock, A, S, D, F, G, H, J, K, L, Semicolon, Quote, Enter, PageDown,
+    LeftShift, Z, X, C, V, B, N, M, Comma, Dot, Slash, RightShift, Delete,
     LeftCtrl, LeftAlt, LeftGui, Space, RightAlt, Fn, LeftArrow, DownArrow, UpArrow, RightArrow,
 }
 

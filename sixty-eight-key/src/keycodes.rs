@@ -67,5 +67,9 @@ pub fn keycode(pos: KeyPosition) -> u8 {
         KeyPosition::DownArrow    => 0x51,
         KeyPosition::UpArrow      => 0x52,
         KeyPosition::RightArrow   => 0x4F,
+        KeyPosition::Backtick     => 0x35,
+        KeyPosition::PageUp        => 0x4B,
+        KeyPosition::PageDown      => 0x4E,
+        KeyPosition::Delete        => 0x4C,
     }
 }

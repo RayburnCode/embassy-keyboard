@@ -1,0 +1,688 @@
+<!-- @format -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mad Mod Labs 68 — Wiring Diagram</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #11111b;
+        --surface: #1e1e2e;
+        --surface2: #2a2a3a;
+        --border: #313244;
+        --text: #cdd6f4;
+        --muted: #6c7086;
+        --accent: #89b4fa;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        padding: 24px;
+        min-height: 100vh;
+      }
+
+      header {
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      /* ── Toolbar ─────────────────────────────────── */
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+
+      .seg {
+        display: flex;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 3px;
+        gap: 2px;
+      }
+
+      .seg-btn {
+        padding: 6px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 600;
+        background: transparent;
+        color: var(--muted);
+        transition:
+          background 0.15s,
+          color 0.15s;
+        letter-spacing: 0.01em;
+      }
+
+      .seg-btn.active {
+        background: #1e3a5f;
+        color: var(--accent);
+      }
+
+      .sep {
+        width: 1px;
+        height: 26px;
+        background: var(--border);
+        align-self: center;
+      }
+
+      .checks {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .chk-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: var(--muted);
+        user-select: none;
+      }
+
+      .chk-label:hover {
+        color: var(--text);
+      }
+
+      .chk-label input {
+        accent-color: var(--accent);
+        cursor: pointer;
+        width: 13px;
+        height: 13px;
+      }
+
+      /* ── Canvas wrap ─────────────────────────────── */
+      .canvas-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      canvas {
+        display: block;
+        cursor: crosshair;
+      }
+
+      /* ── Legend ──────────────────────────────────── */
+      .legend-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .legend-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        flex: 1;
+        min-width: 180px;
+      }
+
+      .legend-card.narrow {
+        flex: 0 0 auto;
+      }
+
+      .legend-title {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .chip {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.72rem;
+        color: var(--muted);
+        background: var(--surface2);
+        border-radius: 4px;
+        padding: 3px 7px;
+      }
+
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .key-guide {
+        font-size: 0.72rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .key-guide span {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 4px;
+        border-radius: 2px;
+      }
+
+      /* ── Status bar ───────────────────────────────── */
+      .status {
+        margin-top: 10px;
+        font-size: 0.75rem;
+        color: var(--muted);
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        min-height: 1.4em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>⌨️ Mad Mod Labs 68 — Wiring Diagram</h1>
+      <p class="subtitle">
+        5-row × 15-column matrix &nbsp;·&nbsp; Toggle front / back view
+        &nbsp;·&nbsp; Hover keys to inspect connections
+      </p>
+    </header>
+
+    <div class="toolbar">
+      <div class="seg">
+        <button
+          class="seg-btn active"
+          id="btn-front"
+          onclick="setView('front')"
+        >
+          ↑ Front View
+        </button>
+        <button class="seg-btn" id="btn-back" onclick="setView('back')">
+          ↓ Back View
+        </button>
+      </div>
+      <div class="sep"></div>
+      <div class="checks">
+        <label class="chk-label">
+          <input type="checkbox" id="chk-rows" checked onchange="render()" />
+          Row Wires
+        </label>
+        <label class="chk-label">
+          <input type="checkbox" id="chk-cols" checked onchange="render()" />
+          Column Wires
+        </label>
+        <label class="chk-label">
+          <input type="checkbox" id="chk-diodes" onchange="render()" />
+          Diodes
+        </label>
+        <label class="chk-label">
+          <input type="checkbox" id="chk-matrix" checked onchange="render()" />
+          Matrix Labels
+        </label>
+      </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="cvs"></canvas>
+    </div>
+
+    <div class="legend-row">
+      <div class="legend-card">
+        <div class="legend-title">Row Wires</div>
+        <div class="chips" id="row-legend"></div>
+      </div>
+      <div class="legend-card">
+        <div class="legend-title">Column Wires</div>
+        <div class="chips" id="col-legend"></div>
+      </div>
+      <div class="legend-card narrow">
+        <div class="legend-title">Key Guide</div>
+        <div class="key-guide">
+          <div>── Horizontal wire = row line</div>
+          <div>│ Vertical wire = column line</div>
+          <div style="color: #555; font-size: 0.68rem">
+            ● = solder point at key centre &nbsp;·&nbsp; r,c = matrix pos
+          </div>
+          <div style="color: #555; font-size: 0.68rem; margin-top: 2px">
+            Diodes: cathode → row (row-scan firmware)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status" id="status">
+      Hover a key to inspect its matrix position and connections
+    </div>
+
+    <!-- layout.js is the single source of truth — defines LAYOUT_DATA & KEY_DISPLAY_NAMES -->
+    <script src="layout.js"></script>
+    <script src="script.js"></script>
+    <script>
+      "use strict";
+
+      // ─── Layout Data — derived from layout.js (LAYOUT_DATA) ───────────────
+      // layout.js is included as a <script> tag above; it defines LAYOUT_DATA
+      // and KEY_DISPLAY_NAMES from the same source as keyboard-layout.json.
+      const LAYOUT = LAYOUT_DATA.layouts.LAYOUT.layout
+        .filter((k) => Array.isArray(k.matrix))
+        .map((k) => ({
+          r: k.matrix[0],
+          c: k.matrix[1],
+          x: k.x,
+          y: k.y,
+          w: k.w ?? 1,
+          label: KEY_DISPLAY_NAMES[k.label] ?? k.label ?? "—",
+        }));
+
+      // ─── Constants — derived from actual layout extents ────────────────────
+      const TOTAL_W = Math.max(...LAYOUT.map((k) => k.x + k.w)); // rightmost edge in key-units
+      const TOTAL_H = Math.max(...LAYOUT.map((k) => k.y)) + 1; // number of rows
+      const U = 62; // px per key unit (logical)
+      const PAD = 46; // px padding around the board
+
+      // Row wire colours (one per row, warm spectrum)
+      const ROW_CLR = [
+        "#ff6b6b", // row 0 — red
+        "#ffa94d", // row 1 — orange
+        "#69db7c", // row 2 — green
+        "#4dabf7", // row 3 — blue
+        "#cc5de8", // row 4 — purple
+      ];
+
+      // Column wire colours — one per column, evenly spread across hue wheel
+      const _numCols = Math.max(...LAYOUT.map((k) => k.c)) + 1;
+      const COL_CLR = Array.from({ length: _numCols }, (_, i) => {
+        const h = Math.round((i * 360) / _numCols);
+        return `hsl(${h}, 75%, 62%)`;
+      });
+
+      // ─── State ─────────────────────────────────────────────────────────────
+      let currentView = "front";
+      let hoveredKey = null;
+
+      // ─── View toggle ───────────────────────────────────────────────────────
+      function setView(v) {
+        currentView = v;
+        document
+          .getElementById("btn-front")
+          .classList.toggle("active", v === "front");
+        document
+          .getElementById("btn-back")
+          .classList.toggle("active", v === "back");
+        render();
+      }
+
+      // ─── Key geometry ──────────────────────────────────────────────────────
+      // Returns pixel bounding box and centre for a key in the current view.
+      // Back view mirrors x (flip left↔right, top stays top).
+      function geom(key) {
+        const kx = currentView === "back" ? TOTAL_W - key.x - key.w : key.x;
+        const px = kx * U + PAD;
+        const py = key.y * U + PAD;
+        const pw = key.w * U;
+        const ph = U;
+        return { px, py, pw, ph, cx: px + pw / 2, cy: py + ph / 2 };
+      }
+
+      // ─── Canvas setup (HiDPI) ──────────────────────────────────────────────
+      const cvs = document.getElementById("cvs");
+      const ctx = cvs.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      const W = TOTAL_W * U + PAD * 2;
+      const H = TOTAL_H * U + PAD * 2;
+      cvs.width = W * dpr;
+      cvs.height = H * dpr;
+      cvs.style.width = W + "px";
+      cvs.style.height = H + "px";
+      ctx.scale(dpr, dpr);
+
+      // ─── Draw helpers ──────────────────────────────────────────────────────
+      function roundRect(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+
+      // Draw a diode symbol centred at (x, y) pointing in dir (+1=right, -1=left).
+      function drawDiode(x, y, dir, color) {
+        const s = 6;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        // Triangle body
+        ctx.beginPath();
+        ctx.moveTo(dir * -s, -s * 0.6);
+        ctx.lineTo(dir * s * 0.4, 0);
+        ctx.lineTo(dir * -s, s * 0.6);
+        ctx.closePath();
+        ctx.fill();
+        // Cathode bar
+        ctx.beginPath();
+        ctx.moveTo(dir * s * 0.4, -s * 0.65);
+        ctx.lineTo(dir * s * 0.4, s * 0.65);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // ─── Main render ───────────────────────────────────────────────────────
+      function render() {
+        const showRows = document.getElementById("chk-rows").checked;
+        const showCols = document.getElementById("chk-cols").checked;
+        const showDiodes = document.getElementById("chk-diodes").checked;
+        const showMatrix = document.getElementById("chk-matrix").checked;
+
+        ctx.clearRect(0, 0, W, H);
+
+        // Background
+        ctx.fillStyle = "#0d1117";
+        ctx.fillRect(0, 0, W, H);
+
+        // Subtle row-band guides
+        ctx.lineWidth = 1;
+        for (let row = 0; row < TOTAL_H; row++) {
+          ctx.fillStyle = row % 2 === 0 ? "#10141c" : "#0d1117";
+          ctx.fillRect(PAD, row * U + PAD, TOTAL_W * U, U);
+        }
+
+        // Build row / column maps
+        const rowMap = {};
+        const colMap = {};
+        for (const key of LAYOUT) {
+          (rowMap[key.r] || (rowMap[key.r] = [])).push(key);
+          (colMap[key.c] || (colMap[key.c] = [])).push(key);
+        }
+
+        // ── Column wires ────────────────────────────────────────────────────
+        // Each column wire is an orthogonal path connecting key centres top→bottom.
+        // Between rows it jogs horizontally at the midpoint to reach the next key,
+        // clearly showing the keyboard stagger and actual key widths.
+        if (showCols) {
+          for (const [cStr, keys] of Object.entries(colMap)) {
+            const ci = parseInt(cStr);
+            const color = COL_CLR[ci];
+            // Sort by visual row (top to bottom)
+            const sorted = [...keys].sort((a, b) => a.y - b.y);
+
+            const contacts = sorted.map((k) => {
+              const g = geom(k);
+              return { x: g.cx, y: g.cy };
+            });
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.globalAlpha = 0.65;
+
+            ctx.beginPath();
+            // Entry stub above first key centre
+            ctx.moveTo(contacts[0].x, contacts[0].y - U * 0.55);
+            ctx.lineTo(contacts[0].x, contacts[0].y);
+
+            for (let i = 1; i < contacts.length; i++) {
+              const prev = contacts[i - 1];
+              const cur = contacts[i];
+              const midY = (prev.y + cur.y) / 2;
+              // Down from previous key centre to inter-row midpoint
+              ctx.lineTo(prev.x, midY);
+              // Horizontal jog to line up with next key (shows stagger & key width)
+              ctx.lineTo(cur.x, midY);
+              // Down to next key centre
+              ctx.lineTo(cur.x, cur.y);
+            }
+
+            // Exit stub below last key centre
+            const last = contacts[contacts.length - 1];
+            ctx.lineTo(last.x, last.y + U * 0.55);
+            ctx.stroke();
+
+            // Solder dots at each key centre
+            ctx.globalAlpha = 0.9;
+            for (const pt of contacts) {
+              ctx.beginPath();
+              ctx.arc(pt.x, pt.y, 3.5, 0, Math.PI * 2);
+              ctx.fillStyle = color;
+              ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        // ── Row wires ───────────────────────────────────────────────────────
+        // Row contact: exact centre of each key (cx, cy).
+        // In the front view diodes point right; mirrored in back view.
+        if (showRows) {
+          for (const [rStr, keys] of Object.entries(rowMap)) {
+            const ri = parseInt(rStr);
+            const color = ROW_CLR[ri];
+
+            // Sort by physical x in the current view
+            const sorted = [...keys].sort((a, b) => geom(a).cx - geom(b).cx);
+
+            const wireY = geom(sorted[0]).cy; // all keys in a row share the same cy
+            const contacts = sorted.map((k) => ({ x: geom(k).cx, y: wireY }));
+            const dir = currentView === "back" ? -1 : 1;
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.lineJoin = "round";
+            ctx.globalAlpha = 0.75;
+
+            if (showDiodes) {
+              // Wire with a diode symbol between every consecutive pair of keys
+              for (let i = 0; i < contacts.length; i++) {
+                const pt = contacts[i];
+
+                if (i === 0) {
+                  // Leading stub on the far side
+                  ctx.beginPath();
+                  ctx.moveTo(pt.x - dir * U * 0.22, wireY);
+                  ctx.lineTo(pt.x, wireY);
+                  ctx.stroke();
+                } else {
+                  const prev = contacts[i - 1];
+                  const dioX = (prev.x + pt.x) / 2;
+                  const halfG = 9; // gap around diode symbol
+
+                  // Wire: prev → diode
+                  ctx.beginPath();
+                  ctx.moveTo(prev.x, wireY);
+                  ctx.lineTo(dioX - halfG * dir, wireY);
+                  ctx.stroke();
+                  // Diode symbol
+                  ctx.globalAlpha = 0.9;
+                  drawDiode(dioX, wireY, dir, color);
+                  ctx.globalAlpha = 0.75;
+                  // Wire: diode → this key
+                  ctx.beginPath();
+                  ctx.moveTo(dioX + halfG * dir, wireY);
+                  ctx.lineTo(pt.x, wireY);
+                  ctx.stroke();
+                }
+              }
+              // Trailing stub
+              const last = contacts[contacts.length - 1];
+              ctx.beginPath();
+              ctx.moveTo(last.x, wireY);
+              ctx.lineTo(last.x + dir * U * 0.22, wireY);
+              ctx.stroke();
+            } else {
+              // Simple continuous horizontal wire
+              ctx.beginPath();
+              ctx.moveTo(contacts[0].x - dir * U * 0.22, wireY);
+              ctx.lineTo(
+                contacts[contacts.length - 1].x + dir * U * 0.22,
+                wireY,
+              );
+              ctx.stroke();
+            }
+
+            // Solder dots on row wire at each key
+            ctx.globalAlpha = 0.9;
+            for (const pt of contacts) {
+              ctx.beginPath();
+              ctx.arc(pt.x, wireY, 3.5, 0, Math.PI * 2);
+              ctx.fillStyle = color;
+              ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        // ── Key bodies ──────────────────────────────────────────────────────
+        for (const key of LAYOUT) {
+          const g = geom(key);
+          const isHovered = key === hoveredKey;
+
+          // Body
+          roundRect(g.px + 2, g.py + 2, g.pw - 4, g.ph - 4, 5);
+          ctx.fillStyle = isHovered ? "#2a3a52" : "#1a2035";
+          ctx.fill();
+          ctx.strokeStyle = isHovered ? "#89b4fa" : "#313244";
+          ctx.lineWidth = isHovered ? 1.5 : 1;
+          ctx.stroke();
+
+          // Key label (centred)
+          const fSize = g.pw < 52 ? 9 : 11;
+          ctx.fillStyle = isHovered ? "#e6edf3" : "#9399b2";
+          ctx.font = `600 ${fSize}px -apple-system, system-ui, sans-serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(key.label, g.cx, g.cy + 3);
+
+          // Matrix position badge (bottom-right corner)
+          if (showMatrix) {
+            ctx.fillStyle = isHovered ? "#555d78" : "#3b4057";
+            ctx.font = '7px "SF Mono", "Fira Code", monospace';
+            ctx.textAlign = "right";
+            ctx.textBaseline = "bottom";
+            ctx.fillText(`${key.r},${key.c}`, g.px + g.pw - 4, g.py + g.ph - 3);
+          }
+        }
+
+        // ── View watermark ─────────────────────────────────────────────────
+        const label =
+          currentView === "front"
+            ? "↑  FRONT  —  facing you"
+            : "↓  BACK  —  keyboard face-down (left ↔ right mirrored)";
+        ctx.globalAlpha = 0.35;
+        ctx.fillStyle = "#cdd6f4";
+        ctx.font = '10px "SF Mono", "Fira Code", monospace';
+        ctx.textAlign = "left";
+        ctx.textBaseline = "bottom";
+        ctx.fillText(label, PAD, H - 10);
+        ctx.globalAlpha = 1;
+      }
+
+      // ─── Mouse hover ───────────────────────────────────────────────────────
+      cvs.addEventListener("mousemove", (e) => {
+        const rect = cvs.getBoundingClientRect();
+        const mx = ((e.clientX - rect.left) / rect.width) * W;
+        const my = ((e.clientY - rect.top) / rect.height) * H;
+
+        let found = null;
+        for (const key of LAYOUT) {
+          const g = geom(key);
+          if (
+            mx >= g.px + 2 &&
+            mx <= g.px + g.pw - 2 &&
+            my >= g.py + 2 &&
+            my <= g.py + g.ph - 2
+          ) {
+            found = key;
+            break;
+          }
+        }
+
+        if (found !== hoveredKey) {
+          hoveredKey = found;
+          if (found) {
+            document.getElementById("status").textContent =
+              `Key: "${found.label}"  ·  Matrix [row ${found.r}, col ${found.c}]  ·  Row wire: ${ROW_CLR[found.r]}  ·  Col wire: ${COL_CLR[found.c]}`;
+          } else {
+            document.getElementById("status").textContent =
+              "Hover a key to inspect its matrix position and connections";
+          }
+          render();
+        }
+      });
+
+      cvs.addEventListener("mouseleave", () => {
+        hoveredKey = null;
+        document.getElementById("status").textContent =
+          "Hover a key to inspect its matrix position and connections";
+        render();
+      });
+
+      // ─── Legend population ─────────────────────────────────────────────────
+      const rowLegend = document.getElementById("row-legend");
+      for (let r = 0; r < 5; r++) {
+        rowLegend.insertAdjacentHTML(
+          "beforeend",
+          `<div class="chip">
+             <div class="dot" style="background:${ROW_CLR[r]}"></div>
+             Row ${r}
+           </div>`,
+        );
+      }
+
+      const colLegend = document.getElementById("col-legend");
+      const usedCols = [...new Set(LAYOUT.map((k) => k.c))].sort(
+        (a, b) => a - b,
+      );
+      for (const c of usedCols) {
+        colLegend.insertAdjacentHTML(
+          "beforeend",
+          `<div class="chip">
+             <div class="dot" style="background:${COL_CLR[c]}"></div>
+             Col ${c}
+           </div>`,
+        );
+      }
+
+      // ─── Initial draw ──────────────────────────────────────────────────────
+      render();
+    </script>
+  </body>
+</html>
